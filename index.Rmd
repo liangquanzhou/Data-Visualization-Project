@@ -1,0 +1,290 @@
+--- 
+title       : EDA on LendingClub Data
+subtitle    : 
+author      : Lu Han, Xiaoyao Yang, Liangquan Zhou
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : [mathjax, interactive]            # {mathjax, quiz, bootstrap}
+ext_widgets : {rCharts: [libraries/nvd3, libraries/morris, libraries/highcharts]}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+--- 
+
+
+<!-- Limit image width and height -->
+<style type='text/css'>
+
+t1 {
+	border: 2px solid black;
+	border-radius: 5px;
+	background-color: #308014;
+	/*Add your CSS here!*/
+	float:right;
+  margin: 20px
+}
+
+t2 {
+  float: right;
+  margin: 40px
+}
+
+t3 {
+  border: 2px solid black;
+  border-radius: 5px;
+	/*Add your CSS here!*/
+}
+
+t4 {
+  float: left;
+  margin: 10px
+}
+</style>
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+require(rCharts)
+require(googleVis)
+require(rHighcharts)
+require(devtools)
+require(slidify)
+require(slidifyLibraries)
+library(knitr)
+library(ggplot2)
+library(reshape2)
+library(scales)
+library(utils)
+library(zoo)
+```
+
+
+## Outline
+
+* <h3>Background<h3>
+* <h3>Data Source<h3>
+* <h3>Visualization<h3>
+
+--- .segue .dark
+
+## Background
+
+--- 
+
+<a href = "http://en.wikipedia.org/wiki/Lending_Club"> <img src = "LendingClub_logo.jpg"/></a>
+
+> * The biggest [Peer-to-Peer lending](http://en.wikipedia.org/wiki/Peer-to-peer_lending) (P2P) company in the world.
+> * Operates an online lending platform that enables borrowers to obtain a loan, and investors to purchase notes backed by payments made on loans. 
+> * Founded on 2006, went Public on December 11, 2014.
+
+--- 
+
+## How P2P works?
+
+<t1><img src = "LC.jpg"></img></t1>
+
+* Borrowers complete applications on LendingClub.com
+
+* Lending Club evaluates the information, determines an interest rate, and instantly presents a variety of offers to qualified borrowers.
+
+* Investors select loans to invest and earn monthly returns.
+  - https://www.lendingclub.com/browse/browse.action
+
+---
+
+## Advantages
+
+> * For Borrowers
+  - Easy online application
+  - Low fixed rates
+  - Fixed monthly payments
+  - Flexible terms
+  - No prepayment penalties
+
+<t2>
+
+> * For Investors
+  - Returns from 5% to 25%
+  - Monthly cash flow
+  - Easy to diversify many loans
+  
+</t2>
+
+---
+
+## Concerns
+
+> * Loans could be defaulted. 
+> * If a loan is defaulted:
+  - impact on the borrower's credit score.
+  - investment losses for investors.
+
+---
+
+## Objective: Exploratory Data Analysis on Lending Club Data
+
+<q>Explore the influential factors of loans properties and major borrower features.</q>
+
+--- .segue .dark
+
+## Data Source
+
+---
+
+## Data Introduction
+
+> * Lending Club publish all issued loans data. 
+  - [https://www.lendingclub.com/info/download-data.action](https://www.lendingclub.com/info/download-data.action)
+
+> * More than 400 thousands loans. From July 2007 to September 2014.
+
+> * Each loan record contains about 100 features, including: 
+  - <font color = "red">Loan Properties</font>:  Loan Amount, Loan Grade, Term, Interest Rate, Loan Purpose, etc.
+  - <font color = "red">Borrower Profile</font>: Annual Income, Credit Score ([FICO Score](http://en.wikipedia.org/wiki/Credit_score_in_the_United_States#FICO_score)), [Debt-to-Income Ratio](http://en.wikipedia.org/wiki/Debt-to-income_ratio), Address, Home Ownership, Open Credit Lines, Delinquency History, etc.
+  - Loan Statistics: Pricipal received, Interest received, Last Payment, Next Payment, Late Fees, Recoveries, etc.
+
+---
+
+## A snapshot of data...
+
+<t4><img src = "data_sample.jpg"/></t4> <br> <br> <br> <br> <br> <h2>...</h2>
+
+<br> <br> <br> <br> <br> <br> 
+
+<h2 align = "center">...</h2>
+
+---
+
+## Data Processing
+
+> * Keep variables we are interested in. 
+  - <font color = "red">Loan Properties</font>: Loan Amount, Loan Grade, Term, Loan Purpose.
+  - <font color = "red">Borrower Profile</font>: Annual Income, Credit Score, Debt-to-Income Ratio, Address, Home Ownership, Open Accounts, Delinquency History. 
+  
+> * Drop missing values and outliers. 
+
+> * Reformatting and Reshaping.
+
+--- .segue .dark
+
+## Visualization
+
+---
+
+## Visualization 
+
+> * For Loan Properties:
+  - Amount
+  - Grade
+  - Term
+  - Purpose
+  
+> * For Borrower Profiles:
+  - Annual income
+  - Credit Score
+  - Debt-to-Income Ratio
+  - Bank Account Delinquency History
+
+---
+
+## Total Loan Amount Trend (in millions)
+
+```{r nvd3plot, results='asis', message=FALSE, echo = FALSE}
+options(rcharts.mode = 'iframesrc', rcharts.cdn =TRUE)
+dat1 = read.csv("total_amount.csv", header = T)
+dat1 = dat1[,-1]
+dat1$loan_amnt = round(dat1$loan_amnt/1000000)
+p8 <- nPlot(loan_amnt ~ issue_d, group ='grade', data = dat1, type = 'stackedAreaChart')
+p8$yAxis(axisLabel = "Total Loan Amount", width = 62)
+p8$xAxis(axisLabel = "Year")
+p8$print("chart1")
+```
+
+> * The P2P Lending Market grows really fast in recent 3 years.
+
+---
+
+## Loan Amount by States
+
+```{r echo=FALSE,message=FALSE, fig.width=12}
+require(ggplot2)
+require(maps)
+require(plyr)
+states <- map_data("state")
+loanbystate <- read.csv('loanbystate.csv',header=T)
+
+choro <- merge(states, loanbystate, sort = FALSE, by = "region")
+choro <- choro[order(choro$order), ]
+q <- qplot(long, lat, data = choro, group = group, fill = loan_amnt,
+      geom = "polygon",main='Loan Amount by State',xlab='',ylab='') + 
+  theme(panel.background = element_blank(),axis.text = element_blank(),
+        axis.ticks =element_blank()) 
+
+q+  scale_fill_gradient2('Total Loan Amount \n(in Million $)',low = "#0000FF", mid = "#FFFFFF", high ="#FF0000",midpoint = median(choro$loan_amnt),
+                         space = "rgb", guide = "colourbar") 
+
+```
+
+---
+
+## Loan Purpose Decomposition
+
+```{r results='asis', echo = FALSE, message=FALSE}
+dat4 = read.csv(file = "purpose.csv", header = T)
+dat4 = dat4[,-1]
+names(dat4) = c("purpose","number_of_loans")
+n2 <- hPlot(number_of_loans ~ purpose, type = "bar", data = dat4)
+n2$print("chart3")
+```
+
+---
+
+## Default Rate Decomposition by Loan Grade
+
+```{r results='asis', echo = FALSE, message=FALSE, fig.width = 12}
+dat2 = read.csv(file = "default_rate.csv", header = T)
+dat2 = dat2[,-1]
+n1 <- hPlot(x = "time", y = c("default_rate"), group = "grade", type = "line", data = dat2)
+n1$print("chart2", include_assets = TRUE)
+# n1$save("default_rate.html")
+# n1$publish("default_rate.html",host = 'rpubs')
+```
+
+> * Default Rates becomes lower and lower.
+
+---
+
+## Borrower Profiles Analysis
+
+[D3.js](http://www.columbia.edu/~xy2231/hist_interactive.html)
+
+--- 
+
+## Further Work...
+
+There still are a lot of things we can explore on lending club's loan dataset.
+
+> * Combination of variables...
+> * Historical Return on Investment Analysis
+> * Loan interest rate prediction...
+
+---
+
+## Packages used
+
+> * plyr - the split-apply-combine paradigm for R
+> * lubridate, zoo - Dates and times
+> * ggplot2 
+> * rCharts - interactive charts
+> * D3.js
+> * slidify - slides
+
+--- 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<center><h2>Thank You!</h2></center>
+

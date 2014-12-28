@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EDA on LendingClub Data</title>
+  <meta charset="utf-8">
+  <meta name="description" content="EDA on LendingClub Data">
+  <meta name="author" content="Lu Han, Xiaoyao Yang, Liangquan Zhou">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="libraries/widgets/nvd3/css/nv.d3.css"></link>
+<link rel=stylesheet href="libraries/widgets/nvd3/css/rNVD3.css"></link>
+<link rel=stylesheet href="libraries/widgets/morris/css/morris.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  <script src="libraries/widgets/nvd3/js/jquery-1.8.2.min.js"></script>
+<script src="libraries/widgets/nvd3/js/d3.v3.min.js"></script>
+<script src="libraries/widgets/nvd3/js/nv.d3.min-new.js"></script>
+<script src="libraries/widgets/nvd3/js/fisheye.js"></script>
+<script src="libraries/widgets/morris/js/raphael-2.1.0.min.js"></script>
+<script src="libraries/widgets/morris/js/morris.min.js"></script>
+<script src="libraries/widgets/highcharts/js/jquery-1.9.1.min.js"></script>
+<script src="libraries/widgets/highcharts/js/highcharts.js"></script>
+<script src="libraries/widgets/highcharts/js/highcharts-more.js"></script>
+<script src="libraries/widgets/highcharts/js/exporting.js"></script>
+
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>EDA on LendingClub Data</h1>
+    <h2></h2>
+    <p>Lu Han, Xiaoyao Yang, Liangquan Zhou<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <article data-timings="">
+    <!-- Limit image width and height -->
+
+<style type='text/css'>
+
+t1 {
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: #308014;
+    /*Add your CSS here!*/
+    float:right;
+  margin: 20px
+}
+
+t2 {
+  float: right;
+  margin: 40px
+}
+
+t3 {
+  border: 2px solid black;
+  border-radius: 5px;
+    /*Add your CSS here!*/
+}
+
+t4 {
+  float: left;
+  margin: 10px
+}
+</style>
+
+<h2>Outline</h2>
+
+<ul>
+<li><h3>Background<h3></li>
+<li><h3>Data Source<h3></li>
+<li><h3>Visualization<h3></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue dark" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Background</h2>
+  </hgroup>
+  <article data-timings="">
+    
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <article data-timings="">
+    <p><a href = "http://en.wikipedia.org/wiki/Lending_Club"> <img src = "LendingClub_logo.jpg"/></a></p>
+
+<ul class = "build incremental">
+<li>The biggest <a href="http://en.wikipedia.org/wiki/Peer-to-peer_lending">Peer-to-Peer lending</a> (P2P) company in the world.</li>
+<li>Operates an online lending platform that enables borrowers to obtain a loan, and investors to purchase notes backed by payments made on loans. </li>
+<li>Founded on 2006, went Public on December 11, 2014.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>How P2P works?</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><t1><img src = "LC.jpg"></img></t1></p>
+
+<ul>
+<li><p>Borrowers complete applications on LendingClub.com</p></li>
+<li><p>Lending Club evaluates the information, determines an interest rate, and instantly presents a variety of offers to qualified borrowers.</p></li>
+<li><p>Investors select loans to invest and earn monthly returns.</p>
+
+<ul>
+<li><a href="https://www.lendingclub.com/browse/browse.action">https://www.lendingclub.com/browse/browse.action</a></li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Advantages</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul class = "build incremental">
+<li>For Borrowers
+
+<ul>
+<li>Easy online application</li>
+<li>Low fixed rates</li>
+<li>Fixed monthly payments</li>
+<li>Flexible terms</li>
+<li>No prepayment penalties</li>
+</ul></li>
+</ul>
+
+<p><t2></p>
+
+<ul class = "build incremental">
+<li>For Investors
+
+<ul>
+<li>Returns from 5% to 25%</li>
+<li>Monthly cash flow</li>
+<li>Easy to diversify many loans</li>
+</ul></li>
+</ul>
+
+<p></t2></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>Concerns</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul class = "build incremental">
+<li>Loans could be defaulted. </li>
+<li>If a loan is defaulted:
+
+<ul>
+<li>impact on the borrower&#39;s credit score.</li>
+<li>investment losses for investors.</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>Objective: Exploratory Data Analysis on Lending Club Data</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><q>Explore the influential factors of loans properties and major borrower features.</q></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue dark" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Data Source</h2>
+  </hgroup>
+  <article data-timings="">
+    
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>Data Introduction</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul class = "build incremental">
+<li><p>Lending Club publish all issued loans data. </p>
+
+<ul>
+<li><a href="https://www.lendingclub.com/info/download-data.action">https://www.lendingclub.com/info/download-data.action</a></li>
+</ul></li>
+<li><p>More than 400 thousands loans. From July 2007 to September 2014.</p></li>
+<li><p>Each loan record contains about 100 features, including: </p>
+
+<ul>
+<li><font color = "red">Loan Properties</font>:  Loan Amount, Loan Grade, Term, Interest Rate, Loan Purpose, etc.</li>
+<li><font color = "red">Borrower Profile</font>: Annual Income, Credit Score (<a href="http://en.wikipedia.org/wiki/Credit_score_in_the_United_States#FICO_score">FICO Score</a>), <a href="http://en.wikipedia.org/wiki/Debt-to-income_ratio">Debt-to-Income Ratio</a>, Address, Home Ownership, Open Credit Lines, Delinquency History, etc.</li>
+<li>Loan Statistics: Pricipal received, Interest received, Last Payment, Next Payment, Late Fees, Recoveries, etc.</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>A snapshot of data...</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><t4><img src = "data_sample.jpg"/></t4> <br> <br> <br> <br> <br> <h2>...</h2></p>
+
+<p><br> <br> <br> <br> <br> <br> </p>
+
+<h2 align = "center">...</h2>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-11" style="background:;">
+  <hgroup>
+    <h2>Data Processing</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul class = "build incremental">
+<li><p>Keep variables we are interested in. </p>
+
+<ul>
+<li><font color = "red">Loan Properties</font>: Loan Amount, Loan Grade, Term, Loan Purpose.</li>
+<li><font color = "red">Borrower Profile</font>: Annual Income, Credit Score, Debt-to-Income Ratio, Address, Home Ownership, Open Accounts, Delinquency History. </li>
+</ul></li>
+<li><p>Drop missing values and outliers. </p></li>
+<li><p>Reformatting and Reshaping.</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue dark" id="slide-12" style="background:;">
+  <hgroup>
+    <h2>Visualization</h2>
+  </hgroup>
+  <article data-timings="">
+    
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-13" style="background:;">
+  <hgroup>
+    <h2>Visualization</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul class = "build incremental">
+<li><p>For Loan Properties:</p>
+
+<ul>
+<li>Amount</li>
+<li>Grade</li>
+<li>Term</li>
+<li>Purpose</li>
+</ul></li>
+<li><p>For Borrower Profiles:</p>
+
+<ul>
+<li>Annual income</li>
+<li>Credit Score</li>
+<li>Debt-to-Income Ratio</li>
+<li>Bank Account Delinquency History</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>Total Loan Amount Trend (in millions)</h2>
+  </hgroup>
+  <article data-timings="">
+    <div id = 'chart1' class = 'rChart nvd3'></div>
+
+<script type='text/javascript'>
+ $(document).ready(function(){
+      drawchart1()
+    });
+    function drawchart1(){  
+      var opts = {
+ "dom": "chart1",
+"width":    800,
+"height":    400,
+"x": "issue_d",
+"y": "loan_amnt",
+"group": "grade",
+"type": "stackedAreaChart",
+"id": "chart1" 
+},
+        data = [
+ {
+ "grade": "A",
+"issue_d": 2007,
+"loan_amnt":              0 
+},
+{
+ "grade": "A",
+"issue_d": 2008,
+"loan_amnt":              2 
+},
+{
+ "grade": "A",
+"issue_d": 2009,
+"loan_amnt":              9 
+},
+{
+ "grade": "A",
+"issue_d": 2010,
+"loan_amnt":             25 
+},
+{
+ "grade": "A",
+"issue_d": 2011,
+"loan_amnt":             52 
+},
+{
+ "grade": "A",
+"issue_d": 2012,
+"loan_amnt":            121 
+},
+{
+ "grade": "A",
+"issue_d": 2013,
+"loan_amnt":            271 
+},
+{
+ "grade": "A",
+"issue_d": 2014,
+"loan_amnt":            444 
+},
+{
+ "grade": "B",
+"issue_d": 2007,
+"loan_amnt":              1 
+},
+{
+ "grade": "B",
+"issue_d": 2008,
+"loan_amnt":              5 
+},
+{
+ "grade": "B",
+"issue_d": 2009,
+"loan_amnt":             16 
+},
+{
+ "grade": "B",
+"issue_d": 2010,
+"loan_amnt":             40 
+},
+{
+ "grade": "B",
+"issue_d": 2011,
+"loan_amnt":             75 
+},
+{
+ "grade": "B",
+"issue_d": 2012,
+"loan_amnt":            220 
+},
+{
+ "grade": "B",
+"issue_d": 2013,
+"loan_amnt":            596 
+},
+{
+ "grade": "B",
+"issue_d": 2014,
+"loan_amnt":            715 
+},
+{
+ "grade": "C",
+"issue_d": 2007,
+"loan_amnt":              1 
+},
+{
+ "grade": "C",
+"issue_d": 2008,
+"loan_amnt":              5 
+},
+{
+ "grade": "C",
+"issue_d": 2009,
+"loan_amnt":             13 
+},
+{
+ "grade": "C",
+"issue_d": 2010,
+"loan_amnt":             27 
+},
+{
+ "grade": "C",
+"issue_d": 2011,
+"loan_amnt":             48 
+},
+{
+ "grade": "C",
+"issue_d": 2012,
+"loan_amnt":            153 
+},
+{
+ "grade": "C",
+"issue_d": 2013,
+"loan_amnt":            567 
+},
+{
+ "grade": "C",
+"issue_d": 2014,
+"loan_amnt":            830 
+},
+{
+ "grade": "D",
+"issue_d": 2007,
+"loan_amnt":              1 
+},
+{
+ "grade": "D",
+"issue_d": 2008,
+"loan_amnt":              4 
+},
+{
+ "grade": "D",
+"issue_d": 2009,
+"loan_amnt":              9 
+},
+{
+ "grade": "D",
+"issue_d": 2010,
+"loan_amnt":             21 
+},
+{
+ "grade": "D",
+"issue_d": 2011,
+"loan_amnt":             37 
+},
+{
+ "grade": "D",
+"issue_d": 2012,
+"loan_amnt":            114 
+},
+{
+ "grade": "D",
+"issue_d": 2013,
+"loan_amnt":            283 
+},
+{
+ "grade": "D",
+"issue_d": 2014,
+"loan_amnt":            607 
+},
+{
+ "grade": "E",
+"issue_d": 2007,
+"loan_amnt":              1 
+},
+{
+ "grade": "E",
+"issue_d": 2008,
+"loan_amnt":              3 
+},
+{
+ "grade": "E",
+"issue_d": 2009,
+"loan_amnt":              4 
+},
+{
+ "grade": "E",
+"issue_d": 2010,
+"loan_amnt":             12 
+},
+{
+ "grade": "E",
+"issue_d": 2011,
+"loan_amnt":             31 
+},
+{
+ "grade": "E",
+"issue_d": 2012,
+"loan_amnt":             70 
+},
+{
+ "grade": "E",
+"issue_d": 2013,
+"loan_amnt":            161 
+},
+{
+ "grade": "E",
+"issue_d": 2014,
+"loan_amnt":            300 
+},
+{
+ "grade": "F",
+"issue_d": 2007,
+"loan_amnt":              1 
+},
+{
+ "grade": "F",
+"issue_d": 2008,
+"loan_amnt":              1 
+},
+{
+ "grade": "F",
+"issue_d": 2009,
+"loan_amnt":              1 
+},
+{
+ "grade": "F",
+"issue_d": 2010,
+"loan_amnt":              5 
+},
+{
+ "grade": "F",
+"issue_d": 2011,
+"loan_amnt":             15 
+},
+{
+ "grade": "F",
+"issue_d": 2012,
+"loan_amnt":             33 
+},
+{
+ "grade": "F",
+"issue_d": 2013,
+"loan_amnt":             84 
+},
+{
+ "grade": "F",
+"issue_d": 2014,
+"loan_amnt":             89 
+},
+{
+ "grade": "G",
+"issue_d": 2007,
+"loan_amnt":              0 
+},
+{
+ "grade": "G",
+"issue_d": 2008,
+"loan_amnt":              1 
+},
+{
+ "grade": "G",
+"issue_d": 2009,
+"loan_amnt":              1 
+},
+{
+ "grade": "G",
+"issue_d": 2010,
+"loan_amnt":              2 
+},
+{
+ "grade": "G",
+"issue_d": 2011,
+"loan_amnt":              4 
+},
+{
+ "grade": "G",
+"issue_d": 2012,
+"loan_amnt":              7 
+},
+{
+ "grade": "G",
+"issue_d": 2013,
+"loan_amnt":             20 
+},
+{
+ "grade": "G",
+"issue_d": 2014,
+"loan_amnt":             30 
+} 
+]
+  
+      if(!(opts.type==="pieChart" || opts.type==="sparklinePlus" || opts.type==="bulletChart")) {
+        var data = d3.nest()
+          .key(function(d){
+            //return opts.group === undefined ? 'main' : d[opts.group]
+            //instead of main would think a better default is opts.x
+            return opts.group === undefined ? opts.y : d[opts.group];
+          })
+          .entries(data);
+      }
+      
+      if (opts.disabled != undefined){
+        data.map(function(d, i){
+          d.disabled = opts.disabled[i]
+        })
+      }
+      
+      nv.addGraph(function() {
+        var chart = nv.models[opts.type]()
+          .width(opts.width)
+          .height(opts.height)
+          
+        if (opts.type != "bulletChart"){
+          chart
+            .x(function(d) { return d[opts.x] })
+            .y(function(d) { return d[opts.y] })
+        }
+          
+         
+        
+          
+        chart.xAxis
+  .axisLabel("Year")
+
+        
+        
+        chart.yAxis
+  .axisLabel("Total Loan Amount")
+  .width(    62)
+      
+       d3.select("#" + opts.id)
+        .append('svg')
+        .datum(data)
+        .transition().duration(500)
+        .call(chart);
+
+       nv.utils.windowResize(chart.update);
+       return chart;
+      });
+    };
+</script>
+
+<ul class = "build incremental">
+<li>The P2P Lending Market grows really fast in recent 3 years.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>Loan Amount by States</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-2.png" alt="plot of chunk unnamed-chunk-2"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-16" style="background:;">
+  <hgroup>
+    <h2>Loan Purpose Decomposition</h2>
+  </hgroup>
+  <article data-timings="">
+    <div id = 'chart3' class = 'rChart highcharts'></div>
+
+<script type='text/javascript'>
+    (function($){
+        $(function () {
+            var chart = new Highcharts.Chart({
+ "dom": "chart3",
+"width":            800,
+"height":            400,
+"credits": {
+ "href": null,
+"text": null 
+},
+"exporting": {
+ "enabled": false 
+},
+"title": {
+ "text": null 
+},
+"yAxis": [
+ {
+ "title": {
+ "text": "number_of_loans" 
+} 
+} 
+],
+"series": [
+ {
+ "data": [
+ [
+ "car",
+5146 
+],
+[
+ "credit_card",
+96787 
+],
+[
+ "debt_consolidation",
+254366 
+],
+[
+ "educational",
+422 
+],
+[
+ "home_improvement",
+24880 
+],
+[
+ "house",
+2159 
+],
+[
+ "major_purchase",
+9254 
+],
+[
+ "medical",
+4281 
+],
+[
+ "moving",
+2822 
+],
+[
+ "other",
+21997 
+],
+[
+ "renewable_energy",
+332 
+],
+[
+ "small_business",
+6704 
+],
+[
+ "vacation",
+2318 
+],
+[
+ "wedding",
+2341 
+] 
+],
+"type": "bar",
+"marker": {
+ "radius":              3 
+} 
+} 
+],
+"legend": {
+ "enabled": false 
+},
+"xAxis": [
+ {
+ "title": {
+ "text": "purpose" 
+},
+"categories": [ "car", "credit_card", "debt_consolidation", "educational", "home_improvement", "house", "major_purchase", "medical", "moving", "other", "renewable_energy", "small_business", "vacation", "wedding" ] 
+} 
+],
+"subtitle": {
+ "text": null 
+},
+"id": "chart3",
+"chart": {
+ "renderTo": "chart3" 
+} 
+});
+        });
+    })(jQuery);
+</script>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>Default Rate Decomposition by Loan Grade</h2>
+  </hgroup>
+  <article data-timings="">
+    <script type='text/javascript' src=C:/Users/Liangquan Zhou/Documents/R/win-library/3.0/rCharts/libraries/highcharts/js/jquery-1.9.1.min.js></script>
+
+<script type='text/javascript' src=C:/Users/Liangquan Zhou/Documents/R/win-library/3.0/rCharts/libraries/highcharts/js/highcharts.js></script>
+
+<script type='text/javascript' src=C:/Users/Liangquan Zhou/Documents/R/win-library/3.0/rCharts/libraries/highcharts/js/highcharts-more.js></script>
+
+<script type='text/javascript' src=C:/Users/Liangquan Zhou/Documents/R/win-library/3.0/rCharts/libraries/highcharts/js/exporting.js></script> 
+
+<p><style>
+  .rChart {
+    display: block;
+    margin-left: auto; 
+    margin-right: auto;
+    width: 800px;
+    height: 400px;
+  }<br>
+  </style></p>
+
+<div id = 'chart2' class = 'rChart highcharts'></div>
+
+<script type='text/javascript'>
+    (function($){
+        $(function () {
+            var chart = new Highcharts.Chart({
+ "dom": "chart2",
+"width":            800,
+"height":            400,
+"credits": {
+ "href": null,
+"text": null 
+},
+"exporting": {
+ "enabled": false 
+},
+"title": {
+ "text": null 
+},
+"yAxis": [
+ {
+ "title": {
+ "text": "default_rate" 
+} 
+} 
+],
+"series": [
+ {
+ "data": [
+ [
+ "2007 Q3",
+           0.2 
+],
+[
+ "2007 Q4",
+         0.097 
+],
+[
+ "2008 Q1",
+         0.128 
+],
+[
+ "2008 Q2",
+         0.169 
+],
+[
+ "2008 Q3",
+         0.125 
+],
+[
+ "2008 Q4",
+         0.088 
+],
+[
+ "2009 Q1",
+         0.107 
+],
+[
+ "2009 Q2",
+         0.095 
+],
+[
+ "2009 Q3",
+         0.067 
+],
+[
+ "2009 Q4",
+         0.084 
+],
+[
+ "2010 Q1",
+         0.043 
+],
+[
+ "2010 Q2",
+         0.056 
+],
+[
+ "2010 Q3",
+         0.064 
+],
+[
+ "2010 Q4",
+         0.058 
+],
+[
+ "2011 Q1",
+         0.059 
+],
+[
+ "2011 Q2",
+         0.053 
+],
+[
+ "2011 Q3",
+         0.066 
+],
+[
+ "2011 Q4",
+         0.079 
+] 
+],
+"name": "A",
+"type": "line",
+"marker": {
+ "radius":              3 
+} 
+},
+{
+ "data": [
+ [
+ "2007 Q3",
+          0.28 
+],
+[
+ "2007 Q4",
+         0.426 
+],
+[
+ "2008 Q1",
+         0.291 
+],
+[
+ "2008 Q2",
+         0.295 
+],
+[
+ "2008 Q3",
+         0.296 
+],
+[
+ "2008 Q4",
+         0.199 
+],
+[
+ "2009 Q1",
+         0.191 
+],
+[
+ "2009 Q2",
+         0.163 
+],
+[
+ "2009 Q3",
+         0.169 
+],
+[
+ "2009 Q4",
+         0.153 
+],
+[
+ "2010 Q1",
+         0.139 
+],
+[
+ "2010 Q2",
+         0.155 
+],
+[
+ "2010 Q3",
+         0.153 
+],
+[
+ "2010 Q4",
+         0.134 
+],
+[
+ "2011 Q1",
+         0.105 
+],
+[
+ "2011 Q2",
+         0.118 
+],
+[
+ "2011 Q3",
+         0.111 
+],
+[
+ "2011 Q4",
+          0.13 
+] 
+],
+"name": "B",
+"type": "line",
+"marker": {
+ "radius":              3 
+} 
+},
+{
+ "data": [
+ [
+ "2007 Q3",
+         0.545 
+],
+[
+ "2007 Q4",
+         0.535 
+],
+[
+ "2008 Q1",
+         0.462 
+],
+[
+ "2008 Q2",
+         0.403 
+],
+[
+ "2008 Q3",
+         0.346 
+],
+[
+ "2008 Q4",
+         0.266 
+],
+[
+ "2009 Q1",
+          0.21 
+],
+[
+ "2009 Q2",
+         0.266 
+],
+[
+ "2009 Q3",
+         0.234 
+],
+[
+ "2009 Q4",
+         0.261 
+],
+[
+ "2010 Q1",
+         0.258 
+],
+[
+ "2010 Q2",
+         0.228 
+],
+[
+ "2010 Q3",
+         0.203 
+],
+[
+ "2010 Q4",
+         0.247 
+],
+[
+ "2011 Q1",
+         0.163 
+],
+[
+ "2011 Q2",
+         0.182 
+],
+[
+ "2011 Q3",
+         0.175 
+],
+[
+ "2011 Q4",
+         0.167 
+] 
+],
+"name": "C",
+"type": "line",
+"marker": {
+ "radius":              3 
+} 
+},
+{
+ "data": [
+ [
+ "2007 Q3",
+          0.75 
+],
+[
+ "2007 Q4",
+         0.781 
+],
+[
+ "2008 Q1",
+         0.629 
+],
+[
+ "2008 Q2",
+         0.691 
+],
+[
+ "2008 Q3",
+         0.618 
+],
+[
+ "2008 Q4",
+         0.415 
+],
+[
+ "2009 Q1",
+         0.282 
+],
+[
+ "2009 Q2",
+           0.4 
+],
+[
+ "2009 Q3",
+         0.348 
+],
+[
+ "2009 Q4",
+          0.33 
+],
+[
+ "2010 Q1",
+         0.299 
+],
+[
+ "2010 Q2",
+         0.331 
+],
+[
+ "2010 Q3",
+         0.295 
+],
+[
+ "2010 Q4",
+         0.301 
+],
+[
+ "2011 Q1",
+         0.191 
+],
+[
+ "2011 Q2",
+         0.219 
+],
+[
+ "2011 Q3",
+         0.218 
+],
+[
+ "2011 Q4",
+         0.231 
+] 
+],
+"name": "D",
+"type": "line",
+"marker": {
+ "radius":              3 
+} 
+},
+{
+ "data": [
+ [
+ "2007 Q3",
+         0.958 
+],
+[
+ "2007 Q4",
+         0.917 
+],
+[
+ "2008 Q1",
+         0.836 
+],
+[
+ "2008 Q2",
+          0.86 
+],
+[
+ "2008 Q3",
+         0.816 
+],
+[
+ "2008 Q4",
+         0.465 
+],
+[
+ "2009 Q1",
+         0.422 
+],
+[
+ "2009 Q2",
+         0.435 
+],
+[
+ "2009 Q3",
+         0.338 
+],
+[
+ "2009 Q4",
+         0.388 
+],
+[
+ "2010 Q1",
+         0.408 
+],
+[
+ "2010 Q2",
+         0.361 
+],
+[
+ "2010 Q3",
+         0.389 
+],
+[
+ "2010 Q4",
+         0.326 
+],
+[
+ "2011 Q1",
+         0.226 
+],
+[
+ "2011 Q2",
+         0.256 
+],
+[
+ "2011 Q3",
+         0.251 
+],
+[
+ "2011 Q4",
+         0.279 
+] 
+],
+"name": "E",
+"type": "line",
+"marker": {
+ "radius":              3 
+} 
+},
+{
+ "data": [
+ [
+ "2007 Q3",
+          0.87 
+],
+[
+ "2007 Q4",
+         0.929 
+],
+[
+ "2008 Q1",
+         0.935 
+],
+[
+ "2008 Q2",
+         0.842 
+],
+[
+ "2008 Q3",
+         0.842 
+],
+[
+ "2008 Q4",
+         0.889 
+],
+[
+ "2009 Q1",
+         0.636 
+],
+[
+ "2009 Q2",
+         0.529 
+],
+[
+ "2009 Q3",
+         0.433 
+],
+[
+ "2009 Q4",
+         0.457 
+],
+[
+ "2010 Q1",
+         0.613 
+],
+[
+ "2010 Q2",
+         0.436 
+],
+[
+ "2010 Q3",
+         0.476 
+],
+[
+ "2010 Q4",
+         0.407 
+],
+[
+ "2011 Q1",
+         0.217 
+],
+[
+ "2011 Q2",
+         0.271 
+],
+[
+ "2011 Q3",
+         0.301 
+],
+[
+ "2011 Q4",
+         0.363 
+] 
+],
+"name": "F",
+"type": "line",
+"marker": {
+ "radius":              3 
+} 
+},
+{
+ "data": [
+ [
+ "2007 Q3",
+             1 
+],
+[
+ "2007 Q4",
+             1 
+],
+[
+ "2008 Q1",
+         0.958 
+],
+[
+ "2008 Q2",
+             1 
+],
+[
+ "2008 Q3",
+             1 
+],
+[
+ "2008 Q4",
+             1 
+],
+[
+ "2009 Q1",
+             1 
+],
+[
+ "2009 Q2",
+         0.667 
+],
+[
+ "2009 Q3",
+         0.833 
+],
+[
+ "2009 Q4",
+         0.524 
+],
+[
+ "2010 Q1",
+          0.75 
+],
+[
+ "2010 Q2",
+         0.412 
+],
+[
+ "2010 Q3",
+         0.591 
+],
+[
+ "2010 Q4",
+         0.444 
+],
+[
+ "2011 Q1",
+         0.305 
+],
+[
+ "2011 Q2",
+         0.244 
+],
+[
+ "2011 Q3",
+         0.372 
+],
+[
+ "2011 Q4",
+         0.436 
+] 
+],
+"name": "G",
+"type": "line",
+"marker": {
+ "radius":              3 
+} 
+} 
+],
+"xAxis": [
+ {
+ "title": {
+ "text": "time" 
+},
+"categories": [ "2007 Q3", "2007 Q4", "2008 Q1", "2008 Q2", "2008 Q3", "2008 Q4", "2009 Q1", "2009 Q2", "2009 Q3", "2009 Q4", "2010 Q1", "2010 Q2", "2010 Q3", "2010 Q4", "2011 Q1", "2011 Q2", "2011 Q3", "2011 Q4" ] 
+} 
+],
+"subtitle": {
+ "text": null 
+},
+"id": "chart2",
+"chart": {
+ "renderTo": "chart2" 
+} 
+});
+        });
+    })(jQuery);
+</script>
+
+<ul class = "build incremental">
+<li>Default Rates becomes lower and lower.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>Borrower Profiles Analysis</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><a href="http://www.columbia.edu/%7Exy2231/hist_interactive.html">D3.js</a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-19" style="background:;">
+  <hgroup>
+    <h2>Further Work...</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>There still are a lot of things we can explore on lending club&#39;s loan dataset.</p>
+
+<ul class = "build incremental">
+<li>Combination of variables...</li>
+<li>Historical Return on Investment Analysis</li>
+<li>Loan interest rate prediction...</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-20" style="background:;">
+  <hgroup>
+    <h2>Packages used</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul class = "build incremental">
+<li>plyr - the split-apply-combine paradigm for R</li>
+<li>lubridate, zoo - Dates and times</li>
+<li>ggplot2 </li>
+<li>rCharts - interactive charts</li>
+<li>D3.js</li>
+<li>slidify - slides</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-21" style="background:;">
+  <article data-timings="">
+    <p><br>
+<br>
+<br>
+<br>
+<br>
+<br></p>
+
+<p><center><h2>Thank You!</h2></center></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title=''>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Background'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title=''>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='How P2P works?'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Advantages'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Concerns'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Objective: Exploratory Data Analysis on Lending Club Data'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Data Source'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Data Introduction'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='A snapshot of data...'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Data Processing'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Visualization'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Visualization'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Total Loan Amount Trend (in millions)'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Loan Amount by States'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Loan Purpose Decomposition'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Default Rate Decomposition by Loan Grade'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Borrower Profiles Analysis'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Further Work...'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Packages used'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title=''>
+         21
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
