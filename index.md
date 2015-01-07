@@ -1,7 +1,7 @@
 --- 
 title       : EDA on LendingClub Data
 subtitle    : 
-author      : Lu Han, Xiaoyao Yang, Liangquan Zhou
+author      : Liangquan Zhou, Lu Han, Xiaoyao Yang
 job         : 
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
